@@ -25,19 +25,17 @@ $cartItemCount ??= 0;
 <body>
 
 <header class="header">
-    <a href="index.php" class="header__logo">SportShop</a>
-
-    <nav class="header__nav">
-        <a href="index.php">Domů</a>
-        <a href="kategorie.php">Kategorie</a>
-        <a href="o-nas.php">O nás</a>
-        <a href="kontakt.php">Kontakt</a>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="/" class="logo">Super eshop</a>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="categories.html">Categories</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count"><?= $cartItemCount ?></span></a></li>
+            </ul>
+        </div>
     </nav>
-
-    <a href="kosik-krok1.php" class="header__cart" title="Košík">
-        &#128722;
-        <?php if ($cartItemCount > 0): ?>
-            <span class="header__cart-badge"><?= $cartItemCount ?></span>
-        <?php endif; ?>
-    </a>
 </header>

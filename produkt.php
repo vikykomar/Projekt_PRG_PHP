@@ -1,32 +1,14 @@
 <?php
-
-declare(strict_types=1);
-
-/**
- * UKÁZKOVÁ STRÁNKA – detail produktu s parametry, galerií a výběrem variant
- *
- * Co tato stránka ukazuje:
- *   - Načtení produktu podle slugu z URL (?slug=...)
- *   - Výpis galerie obrázků a parametrů produktu
- *   - Volitelné parametry (velikost, barva) jako dropdown pro výběr
- *   - Přidání do košíku s vybranou variantou (Post/Redirect/Get)
- *   - Ošetření stavu, kdy produkt neexistuje
- */
-
-// 1) Načteme všechny třídy
 require_once __DIR__ . '/src/bootstrap.php';
 
-// 2) Vytvoříme instance
 $productRepo = new ProductRepository();
 $cart = new Cart();
 
-// 3) Zpracování akce "přidat do košíku"
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     $productId = (int) $_POST['product_id'];
     $product = $productRepo->getById($productId);
 
     if ($product !== null) {
-        // Sestavení varianty z odeslaných dropdown hodnot
         $variant = '';
         if (isset($_POST['variants']) && is_array($_POST['variants'])) {
             $parts = $_POST['variants'];
@@ -45,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
             image: $product->image,
             variant: $variant,
         );
+        
     }
 
     header('Location: ' . $_SERVER['REQUEST_URI']);
     exit;
 }
 
-// 4) Načtení produktu podle slugu z URL
 $slug = trim($_GET['slug'] ?? '');
 $product = $slug !== '' ? $productRepo->getBySlug($slug) : null;
 
@@ -65,114 +47,81 @@ if ($product === null) {
     exit;
 }
 
-// 5) Načtení souvisejících dat
 $images = $productRepo->getImages($product->id);
 $params = $productRepo->getParameters($product->id);
 
-// Rozdělení parametrů na volitelné (select) a informační
 $selectableParams = array_filter($params, fn(ProductParameterDTO $p) => $p->isSelectable());
 $infoParams = array_filter($params, fn(ProductParameterDTO $p) => !$p->isSelectable());
 
-// 6) Proměnné pro header
 $pageTitle = $product->name . ' – SportShop';
 $cartItemCount = $cart->getTotalQuantity();
-
 ?>
-<?php require __DIR__ . '/partials/header.php'; ?>
 
-<main class="container">
-    <div class="product-detail">
-        <!-- Levá strana – obrázky -->
-        <div>
-            <img
-                class="product-detail__image"
-                src="<?= htmlspecialchars($product->image) ?>"
-                alt="<?= htmlspecialchars($product->name) ?>"
-            >
+<?php
+require __DIR__ . '/partials/header.php';
+?>
 
-            <?php if ($images !== []): ?>
-                <div class="product-detail__gallery">
-                    <?php foreach ($images as $img): ?>
-                        <img
-                            src="<?= htmlspecialchars($img->image) ?>"
-                            alt="<?= htmlspecialchars($product->name) ?>"
-                        >
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-
-        <!-- Pravá strana – info -->
-        <div>
-            <span class="product-detail__category">
-                <?= htmlspecialchars($product->categoryName ?? '') ?>
-            </span>
-
-            <h1 class="product-detail__name">
-                <?= htmlspecialchars($product->name) ?>
-            </h1>
-
-            <div class="product-detail__price">
-                <span class="product-detail__price-current">
-                    <?= number_format($product->price, 0, ',', ' ') ?> Kč
-                </span>
-
-                <?php if ($product->hasDiscount()): ?>
-                    <span class="product-detail__price-original">
-                        <?= number_format($product->originalPrice, 0, ',', ' ') ?> Kč
-                    </span>
-                    <span class="product-card__discount">
-                        -<?= $product->getDiscountPercent() ?> %
-                    </span>
-                <?php endif; ?>
-            </div>
-
-            <p class="product-detail__description">
-                <?= htmlspecialchars($product->description) ?>
-            </p>
-
-            <!-- Formulář s výběrem variant a tlačítkem přidat do košíku -->
-            <form method="post">
-                <input type="hidden" name="product_id" value="<?= $product->id ?>">
-
-                <?php foreach ($selectableParams as $param): ?>
-                    <div class="product-detail__variant">
-                        <label for="variant-<?= htmlspecialchars($param->name) ?>">
-                            <?= htmlspecialchars($param->name) ?>:
-                        </label>
-                        <select
-                            name="variants[<?= htmlspecialchars($param->name) ?>]"
-                            id="variant-<?= htmlspecialchars($param->name) ?>"
-                            required
-                        >
-                            <option value="">-- Vyberte --</option>
-                            <?php foreach ($param->getOptions() as $option): ?>
-                                <option value="<?= htmlspecialchars($option) ?>">
-                                    <?= htmlspecialchars($option) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+    <section class="product-details">
+        <div class="container">
+            <div class="product-detail-layout">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <div class="main-image">
+                        <img src="<?= htmlspecialchars($product->image) ?>" alt="<?= htmlspecialchars($product->name) ?>">
                     </div>
-                <?php endforeach; ?>
+                    <?php if ($images !== []): ?>
+                        <div class="thumbnail-images">
+                            <?php foreach ($images as $img): ?>
+                                <img
+                                    src="<?= htmlspecialchars($img->image) ?>"
+                                    alt="<?= htmlspecialchars($product->name) ?>"
+                                    class="thumbnail"
+                                >
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
 
-                <button type="submit" name="add_to_cart" class="product-detail__btn">
-                    Přidat do košíku
-                </button>
-            </form>
+                <div class="product-details-info">
+                    <h1>Premium Product Name</h1>
+                    <p class="category-badge"><?= htmlspecialchars($product->categoryName ?? '') ?></p>
 
-            <?php if ($infoParams !== []): ?>
-                <table class="params-table">
-                    <caption>Parametry produktu</caption>
-                    <?php foreach ($infoParams as $param): ?>
-                        <tr>
-                            <th><?= htmlspecialchars($param->name) ?></th>
-                            <td><?= htmlspecialchars($param->value) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-            <?php endif; ?>
-        </div>
-    </div>
-</main>
+                    <div class="price-section">
+                        <p class="price"><?= number_format($product->price, 0, ',', ' ') ?> Kč</p>
+                    </div>
 
-<?php require __DIR__ . '/partials/footer.php'; ?>
+                    <p class="description"><?= htmlspecialchars($product->description) ?></p>
+                    <form method="post">
+                        <input type="hidden" name="product_id" value="<?= $product->id ?>">
+                    <div>
+                        <?php foreach ($selectableParams as $param):?>
+                            <div class="option-group">
+                                <label for="variant-<?= htmlspecialchars($param->name) ?>"><?= htmlspecialchars($param->name) ?>:</label>
+                                <select class="option-select" name="variants[<?= htmlspecialchars($param->name) ?>]" id="variant-<?= htmlspecialchars($param->name) ?>" required>
+                                    <option value="">-- Vyberte --</option>
+                                    <?php foreach ($param->getOptions() as $option): ?>
+                                        <option value="<?= htmlspecialchars($option) ?>">
+                                            <?= htmlspecialchars($option) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        <?php endforeach;?>
+                    </div>
+
+                    <div class="product-actions">
+                        <button class="btn btn-primary btn-lg" name="add_to_cart" type="submit">Přidat do košíku</button>
+                    </div>
+                    </form>
+                    <div class="product-meta">
+                        <?php foreach ($infoParams as $param): ?>
+                            <p><strong><?= htmlspecialchars($param->name) ?>:</strong> <?= htmlspecialchars($param->value) ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+<?php
+require __DIR__ . '/partials/footer.php';
+?>

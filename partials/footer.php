@@ -9,12 +9,8 @@
 ?>
 
 <footer class="footer">
-    <div class="footer__inner">
-        <p>&copy; <?= date('Y') ?> SportShop – Školní projekt</p>
-        <nav class="footer__nav">
-            <a href="o-nas.php">O nás</a>
-            <a href="kontakt.php">Kontakt</a>
-        </nav>
+    <div class="container">
+        <p>&copy; 2026 Super eshop. All rights reserved.</p>
     </div>
 </footer>
 
