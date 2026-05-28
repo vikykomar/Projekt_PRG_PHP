@@ -1,0 +1,15 @@
+{
+  "name": "PHP Výuka",
+  "image": "mcr.microsoft.com/devcontainers/php:8.3",
+  "forwardPorts": [8080],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php"
+      }
+    }
+  }
+}
