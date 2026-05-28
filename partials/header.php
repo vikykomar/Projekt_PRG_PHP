@@ -1,16 +1,5 @@
 <?php
-
-/**
- * PARTIAL: Hlavička stránky
- *
- * Očekává proměnnou:
- *   $pageTitle (string) – titulek stránky
- *
- * Volitelně:
- *   $cartItemCount (int) – počet položek v košíku (výchozí 0)
- */
-
-$pageTitle ??= 'SportShop';
+$pageTitle ??= 'Super eshop';
 $cartItemCount ??= 0;
 
 ?>
@@ -32,9 +21,9 @@ $cartItemCount ??= 0;
             </div>
             <ul class="navbar-menu">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="categories.html">Categories</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count"><?= $cartItemCount ?></span></a></li>
+                <li><a href="kategorie.php">Kategorie</a></li>
+                <li><a href="about.html">O Nás</a></li>
+                <li><a href="cart.html" class="cart-link">🛒 Košík <span class="cart-count"><?= $cartItemCount ?></span></a></li>
             </ul>
         </div>
     </nav>
