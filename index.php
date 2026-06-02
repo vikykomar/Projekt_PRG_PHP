@@ -5,6 +5,7 @@ $productRepo = new ProductRepository();
 $cart = new Cart();
 
 $featuredProducts = $productRepo->getFeatured(limit: 6);
+$cartItemCount = $cart->getTotalQuantity();
 ?>
 
 <?php

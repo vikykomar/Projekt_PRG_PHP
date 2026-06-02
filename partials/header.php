@@ -23,7 +23,7 @@ $cartItemCount ??= 0;
                 <li><a href="index.php">Home</a></li>
                 <li><a href="kategorie.php">Kategorie</a></li>
                 <li><a href="about.html">O Nás</a></li>
-                <li><a href="cart.html" class="cart-link">🛒 Košík <span class="cart-count"><?= $cartItemCount ?></span></a></li>
+                <li><a href="kosik.php" class="cart-link">🛒 Košík <span class="cart-count"><?= $cartItemCount ?></span></a></li>
             </ul>
         </div>
     </nav>

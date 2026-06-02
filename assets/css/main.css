@@ -57,6 +57,12 @@ a {
     transition: color 0.3s ease;
 }
 
+a.disabled{
+    pointer-events: none;
+    color: #ccc;
+    background-color: gray;
+}
+
 a:hover {
     color: #0056b3;
 }

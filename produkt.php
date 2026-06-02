@@ -35,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
 }
 
 $slug = trim($_GET['slug'] ?? '');
-$product = $slug !== '' ? $productRepo->getBySlug($slug) : null;
+$id = trim($_GET['id'] ?? '');
+$product = $slug !== '' ? $productRepo->getBySlug($slug) : ($id !== '' ? $productRepo->getById($id) : null);
 
 if ($product === null) {
     http_response_code(404);

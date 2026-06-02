@@ -24,6 +24,7 @@ if ($nactenakategorie === null) {
 $nactenakategorieid = $nactenakategorie -> id;
 
 $nacteneprodukty = $productRepo->getByCategory($nactenakategorieid);
+$cartItemCount = $cart->getTotalQuantity();
 ?>
 
 <?php
