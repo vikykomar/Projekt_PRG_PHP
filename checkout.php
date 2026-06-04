@@ -13,7 +13,9 @@ $CartProducts = $cart->getItems();
 $shippingMethods = $shippingRepo->getAll();
 $paymentMethods = $paymentRepo->getAll();
 
-if($cart->getTotalQuantity() <= 0){
+$cartItemCount = $cart->getTotalQuantity();
+
+if($cartItemCount <= 0){
     header('Location: /');
     exit;
 }
@@ -50,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order'])) {
 
     $cart->clear();
 
+    header('Location: /checkout2.php?id=' . $order->id);
     exit;
 }
-
 ?>
 
 <?php
