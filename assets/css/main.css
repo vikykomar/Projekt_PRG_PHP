@@ -893,17 +893,6 @@ a:hover {
     gap: 30px;
 }
 
-.checkout-form {
-}
-
-.checkout-step {
-    display: none;
-}
-
-.checkout-step.active {
-    display: block;
-}
-
 .form {
     background-color: #f9f9f9;
     padding: 30px;

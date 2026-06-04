@@ -24,7 +24,7 @@
         <form method="POST">
             <input type="hidden" name="product_id" value="<?= htmlspecialchars($product->productId) ?>">
             <input type="hidden" name="variant" value="<?= htmlspecialchars($product->variant) ?>">
-            <button type="submit" name="remove_item" class="btn-remove">Remove</button>
+            <button type="submit" name="remove_item" class="btn-remove">Odstranit</button>
         <form>
     </td>
 </tr>

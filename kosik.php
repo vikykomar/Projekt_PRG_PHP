@@ -49,11 +49,11 @@ require __DIR__ . '/partials/header.php';
                     <table class="cart-table">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                                <th>Produkt</th>
+                                <th>Cena</th>
+                                <th>Počet</th>
+                                <th>Celkem</th>
+                                <th>Akce</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,7 +80,7 @@ require __DIR__ . '/partials/header.php';
                             <span><?= number_format($cart->getTotalPrice(), 0, ',', ' ') ?> Kč</span>
                         </div>
 
-                        <a href="checkout.html" class="btn btn-primary btn-lg <?= $cart->getTotalQuantity() === 0 ? "disabled" : "" ?>">Pokračovat k pokladně</a>
+                        <a href="checkout.php" class="btn btn-primary btn-lg <?= $cart->getTotalQuantity() === 0 ? "disabled" : "" ?>">Pokračovat k pokladně</a>
                     </div>
                 </aside>
             </div>
