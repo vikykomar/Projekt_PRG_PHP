@@ -22,7 +22,7 @@ $cartItemCount ??= 0;
             <ul class="navbar-menu">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="kategorie.php">Kategorie</a></li>
-                <li><a href="about.html">O Nás</a></li>
+                <li><a href="about.php">O Nás</a></li>
                 <li><a href="kosik.php" class="cart-link">🛒 Košík <span class="cart-count"><?= $cartItemCount ?></span></a></li>
             </ul>
         </div>
